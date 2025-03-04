@@ -19,14 +19,14 @@ startBtn.addEventListener("click", () => {
 
 function changeIcon(weatherMain) {
     let icons = {
-        Clouds: "C:/Users/ariku/Downloads/clouds.png",
-        Rain: "C:/Users/ariku/Downloads/rain.png",
-        Mist: "C:/Users/ariku/Downloads/mist.png",
-        Haze: "C:/Users/ariku/Downloads/haze.png",
-        Snow: "C:/Users/ariku/Downloads/snow (1).png",
-        Clear: "C:/Users/ariku/Downloads/clear.png",
+        Clouds: "clouds.png",
+        Rain: "rain.png",
+        Mist: "mist.png",
+        Haze: "haze.png",
+        Snow: "snow (1).png",
+        Clear: "clear.png",
     };
-    icon.src = icons[weatherMain] || "C:/Users/ariku/Downloads/clear.png";
+    icon.src = icons[weatherMain] || "clear.png";
 }
 
 const url = "https://api.openweathermap.org/data/2.5/weather?";
@@ -46,7 +46,7 @@ async function getWeatherData(city) {
         wind.innerHTML = "0 km/h";
         humidity.innerHTML = "0%";
         search.value = "";
-        icon.src = "C:/Users/ariku/Downloads/clear.png";
+        icon.src = "clear.png";
         return;
     }
 
