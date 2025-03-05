@@ -19,12 +19,12 @@ startBtn.addEventListener("click", () => {
 
 function changeIcon(weatherMain) {
     let icons = {
-        Clouds: "clouds.png",
-        Rain: "rain.png",
-        Mist: "mist.png",
-        Haze: "haze.png",
-        Snow: "snow (1).png",
-        Clear: "clear.png",
+        Clouds: ".image/clouds.png",
+        Rain: ".image/rain.png",
+        Mist: ".image/mist.png",
+        Haze: ".image/haze.png",
+        Snow: ".image/snow (1).png",
+        Clear: ".image/clear.png",
     };
     icon.src = icons[weatherMain] || "clear.png";
 }
