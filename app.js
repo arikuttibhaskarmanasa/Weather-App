@@ -19,49 +19,55 @@ startBtn.addEventListener("click", () => {
 
 function changeIcon(weatherMain) {
     let icons = {
-        Clouds: ".image/clouds.png",
-        Rain: ".image/rain.png",
-        Mist: ".image/mist.png",
-        Haze: ".image/haze.png",
-        Snow: ".image/snow (1).png",
-        Clear: ".image/clear.png",
+        Clouds: "image/clouds.png",
+        Rain: "image/rain.png",
+        Mist: "image/mist.png",
+        Haze: "image/haze.png",
+        Snow: "image/snow.png",  // Ensure this file exists correctly
+        Clear: "image/clear.png",
     };
-    icon.src = icons[weatherMain] || "clear.png";
+    icon.src = icons[weatherMain] || "image/clear.png"; // Default to clear weather icon
 }
 
 const url = "https://api.openweathermap.org/data/2.5/weather?";
 const apiKey = "60c87147d8f6193adef70e580032a403";
 
 async function getWeatherData(city) {
-    let finalUrl = `${url}q=${city}&appid=${apiKey}`;
-    let weatherData = await fetch(finalUrl).then(res => res.json());
-    console.log(weatherData);
+    try {
+        let finalUrl = `${url}q=${city}&appid=${apiKey}&units=metric`; // Added &units=metric to get temperature in Celsius
+        let weatherData = await fetch(finalUrl);
+        let data = await weatherData.json();
+        console.log(data);
 
-    if (weatherData.cod == 404) {
-        mainBox2.classList.add("inactive");
-        mainBox3.classList.remove("inactive");
-        desc.innerHTML = "City not found";
-        temp.innerHTML = "0°C";
-        cityName.innerHTML = "Unknown";
-        wind.innerHTML = "0 km/h";
-        humidity.innerHTML = "0%";
-        search.value = "";
-        icon.src = "clear.png";
-        return;
+        if (data.cod == 404) {
+            mainBox2.classList.add("inactive");
+            mainBox3.classList.remove("inactive");
+            desc.innerHTML = "City not found";
+            temp.innerHTML = "0°C";
+            cityName.innerHTML = "Unknown";
+            wind.innerHTML = "0 km/h";
+            humidity.innerHTML = "0%";
+            search.value = "";
+            icon.src = "image/clear.png";
+            return;
+        }
+
+        if (data.weather && data.weather.length > 0) {
+            desc.innerHTML = data.weather[0].description;
+            changeIcon(data.weather[0].main);
+        }
+
+        if (data.main) {
+            temp.innerHTML = Math.round(data.main.temp) + "°C";
+            wind.innerHTML = data.wind.speed + " km/h";
+            humidity.innerHTML = data.main.humidity + "%";
+        }
+
+        cityName.innerHTML = data.name;
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        alert("Failed to fetch weather data. Please check your internet connection.");
     }
-
-    if (weatherData.weather && weatherData.weather.length > 0) {
-        desc.innerHTML = weatherData.weather[0].description;
-        changeIcon(weatherData.weather[0].main);
-    }
-
-    if (weatherData.main) {
-        temp.innerHTML = Math.round(weatherData.main.temp - 273.15) + "°C";
-        wind.innerHTML = weatherData.wind.speed + " km/h";
-        humidity.innerHTML = weatherData.main.humidity + "%";
-    }
-
-    cityName.innerHTML = weatherData.name;
 }
 
 searchIcon.addEventListener("click", () => {
